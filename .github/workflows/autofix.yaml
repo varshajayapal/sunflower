@@ -49,4 +49,4 @@ jobs:
           FILE_ID: ${{ inputs.fileId }}
         run: |
           set -euo pipefail
-          ./bin/appknox knoxfixer --file-id "$FILE_ID"
+          ./bin/appknox autofix --file-id "$FILE_ID"
