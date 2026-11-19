@@ -22,6 +22,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.google.samples.apps.sunflower.compose.SunflowerApp
 import com.google.samples.apps.sunflower.ui.SunflowerTheme
+import com.google.samples.apps.sunflower.utilities.SecurityUtils
+import com.google.samples.apps.sunflower.utils.isAdbEnabled
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,6 +31,11 @@ class GardenActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (!BuildConfig.DEBUG && SecurityUtils.isDeveloperOptionsEnabled(this)) {
+            finish()
+            return
+        }
 
         // Displaying edge-to-edge
         enableEdgeToEdge()
@@ -38,5 +45,12 @@ class GardenActivity : ComponentActivity() {
             }
         }
         
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!BuildConfig.DEBUG && isAdbEnabled(this)) {
+            finishAffinity()
+        }
     }
 }
